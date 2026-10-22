@@ -9,9 +9,10 @@ Built for amateur and beginner student developers who want quick, plain feedback
 **First, get the code:**
 
 On this page, click the green Code button, then Download ZIP.
+
 Unzip the file somewhere you can find it.
 
-Then follow the steps for your browser.
+**Then follow the steps for your browser.**
 
 **For Chrome**
 
