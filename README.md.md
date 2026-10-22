@@ -25,8 +25,12 @@ Select the chrome/ folder from the unzipped files.
 
 
 **For Firefox**
+
 Open about:debugging#/runtime/this-firefox in a new tab.
+
 Click Load Temporary Add-on.
+
 Select the file firefox/manifest.json from the unzipped files.
+
 
 **Firefox note**: temporary add-ons are removed when Firefox closes, so you will need to load it again after restarting the browser.
