@@ -14,9 +14,13 @@ Unzip the file somewhere you can find it.
 Then follow the steps for your browser.
 
 **For Chrome**
+
 Open chrome://extensions/ in a new tab.
+
 Turn on Developer mode (top right).
+
 Click Load unpacked.
+
 Select the chrome/ folder from the unzipped files.
 
 
