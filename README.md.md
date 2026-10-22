@@ -4,7 +4,7 @@ A browser extension that checks the pages you visit for common client-side secur
 
 Built for amateur and beginner student developers who want quick, plain feedback on the security of their own websites. Works in Chrome and Firefox.
 
-**Installation**
+**To Install this Extensions on Firefox or Chrome**
 
 **First, get the code:**
 
