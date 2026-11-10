@@ -107,7 +107,7 @@ function displayResults(results) {
   displayMixedContent(results.mixedContent || []);
   displayUnsafeLinks(results.unsafeLinks || []);
   displayInsecureStorage(results.insecureStorage || []);
-  displayCSPViolations(results.cspViolations || []);
+  displayCSPViolations(results.cspViolations || [], results.cspStatus);
   
   if (results.score >= 90) {
     successMessage.style.display = 'block';
@@ -207,12 +207,48 @@ function displayInsecureStorage(issues) {
 }
 
 // Display CSP
-function displayCSPViolations(issues) {
+const CSP_ADVICE = {
+  'missing': "Without a CSP the browser runs any script that gets into the page. Add a Content-Security-Policy header, for example default-src 'self'.",
+  'report-only': 'Problems are only logged and nothing is blocked. Send the policy as Content-Security-Policy to enforce it.',
+  'no-script-rule': 'Add a default-src or script-src directive so the browser knows which scripts to trust.',
+  'unsafe-inline': "Inline scripts are a common route for XSS attacks. Remove 'unsafe-inline' and move scripts into files, or use a nonce.",
+  'unsafe-eval': "eval turns text into running code. Remove 'unsafe-eval' from the policy.",
+  'wildcard': "Any site can supply scripts to this page. Replace the wildcard with 'self' and the exact sites you load scripts from."
+};
+
+function displayCSPViolations(issues, status) {
   const count = issues.length;
+  const icon = document.querySelector('#csp-section .severity-icon');
+
+  if (status === 'unreadable' || status === 'skipped') {
+    cspCount.textContent = '?';
+    cspCount.className = 'issue-count zero';
+    cspDetails.innerHTML = `<div class="empty-state">${status === 'skipped'
+      ? 'Not checked. This page was not loaded from a web server.'
+      : 'Not checked. The CSP header for this page could not be read.'}</div>`;
+    return;
+  }
+
   cspCount.textContent = count === 0 ? '✓' : count;
   cspCount.className = count === 0 ? 'issue-count zero' : 'issue-count';
-  
-  cspDetails.innerHTML = '<div class="empty-state">✓ No issues</div>';
+
+  if (count === 0) {
+    cspDetails.innerHTML = '<div class="empty-state">✓ No issues</div>';
+    if (icon) {
+      icon.className = 'severity-icon severity-ok';
+      icon.textContent = '✓';
+    }
+  } else {
+    cspDetails.innerHTML = issues.map(issue => `
+      <div class="issue-card high">
+        <div class="issue-title">⚠️ ${escapeHtml(issue.message)}</div>
+        <div class="issue-url">${escapeHtml(issue.evidence)}</div>
+        <div class="issue-description">
+          ${escapeHtml(CSP_ADVICE[issue.check] || 'Review the Content Security Policy for this page.')}
+        </div>
+      </div>
+    `).join('');
+  }
 }
 
 // Toggle Category
